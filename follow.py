@@ -5,7 +5,7 @@ headers = {
     "Cookie": "",
     "X-CSRFToken": "",
     "X-Instagram-AJAX":"1",
-    "Referer":"https://www.instagram.com/apple/"
+    "Referer":"https://www.instagram.com/"
 }
 def follow(user, id):
     headers = {
