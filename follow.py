@@ -1,6 +1,9 @@
 import requests
 import time
 
+following = []
+
+
 headers = {
     "Cookie": "",
     "X-CSRFToken": "",
@@ -15,17 +18,29 @@ def follow(user, id):
         "Referer": "https://www.instagram.com/"+user+"/"
     }
     requests.post("https://www.instagram.com/web/friendships/"+id+"/follow/", headers=headers)
+        following.append(user)
+    print "ok, followed:", user,id
 
 def getfollows():
-    start = input("start?")
-    counter = 0
-    resp = requests.get("https://www.instagram.com/graphql/query/?query_id=17851374694183129&variables={\"id\":\"6860189\",\"first\":1000}", headers=headers).json()
-    for i in  resp['data']['user']['edge_followed_by']['edges']:
-        counter+=1
-        user = i['node']['username']
-        id = i['node']['id']
-        follow(user,id)
-        print "followed:", user, "follower:",counter, "start:", start
-        time.sleep(30
+    resp = requests.get("https://www.instagram.com/graphql/query/?query_id=17874545323001329&variables={\"id\":\"5985933082\",\"first\":1000}", headers=headers).json()
+    for i in  resp['data']['user']['edge_follow']['edges']:
+        following.append(i['node']['username'])
 
+def foolow(userid):
+    resp = requests.get(
+        "https://www.instagram.com/graphql/query/?query_id=17851374694183129&variables={\"id\":" + userid + ",\"first\":1000}",
+        headers=headers).json()
+    try:
+        for i in resp['data']['user']['edge_followed_by']['edges']:
+            user = i['node']['username']
+            userid = i['node']['id']
+            if "lacourdeschit" not in user and user not in following:
+                follow(user, userid)
+                foolow(userid)
+            else:
+                print "entweder folge ich mir selbst oder jmd. dem ich schon folge"
+    except Exception, e:
+        print e, "test"
+        traceback.print_exc()
 getfollows()
+foolow("6860189")
