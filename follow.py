@@ -11,15 +11,11 @@ headers = {
     "X-Instagram-AJAX":"1",
     "Referer":"https://www.instagram.com/"
 }
-def follow(user, id):
-    headers = {
-        "Cookie": "",
-        "X-CSRFToken": "",
-        "X-Instagram-AJAX": "1",
-        "Referer": "https://www.instagram.com/"+user+"/"
-    }
-    requests.post("https://www.instagram.com/web/friendships/"+id+"/follow/", headers=headers)
-        following.append(user)
+def follow(user, id, headers):
+    url = "https://www.instagram.com/web/friendships/"+id+"/follow/"
+    resp = requests.post(url, headers=headers)
+    following.append(user)
+    print resp.text
     print "ok, followed:", user,id
 
 def getfollows():
@@ -43,5 +39,3 @@ def foolow(userid):
     except Exception, e:
         print e, "test"
         traceback.print_exc()
-getfollows()
-foolow("6860189")
