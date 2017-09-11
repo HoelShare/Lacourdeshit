@@ -52,6 +52,6 @@ def create_user():
     )
 
     if req.status_code == 200:
-        return req.text, username, password, mailbox
+        return req.text, username, password, mailbox, req.cookies
     else:
         return req.status_code, req.text
