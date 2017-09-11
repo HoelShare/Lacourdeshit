@@ -30,6 +30,7 @@ def follow(user, id, headers):
             print resp.text
             raise not_following_err
     except KeyError:
+        print resp.text
         print "error occured: %s skipped"%user
     except simplejson.scanner.JSONDecodeError:
         print "json error:",
