@@ -20,6 +20,8 @@ class InstagramUserManager(object):
         self.db = {}
         self.users = []
 
+        self.listed_proxies = []
+
         self.directory_state = self.validity_check(directory)
         if self.directory_state == NONE_DIRECOTRY:
             os.mkdir(self.directory)
@@ -29,6 +31,7 @@ class InstagramUserManager(object):
             with open(self.directory + "/db.json", "wa") as target:
                 target.write(json.dumps({
                     "users": [],
+                    "proxies": [],
                     "created": 0
                 }))
             self.directory_state = VALID_DIRECTORY
@@ -43,21 +46,31 @@ class InstagramUserManager(object):
         for user in self.db["users"]:
             self.users.append(self.decode_user(user))
 
+        for proxy in self.db["proxies"]:
+            self.listed_proxies.append(proxy)
+
     def add_user(self, user):
-        if not user in self.users:
-            self.users.append(user)
-            return True
-        else:
-            return False
+        prev_user = None
+        for element in self.users:
+            if element.user_id == user.user_id:
+                prev_user = element
+                break
+        if prev_user:
+            self.users.pop(self.users.index(prev_user))
+        self.users.append(user)
+
+    def add_proxy(self, ip):
+        if not ip in self.listed_proxies:
+            self.listed_proxies.append(ip)
 
     def gen_db(self):
         tmp = {
             "users": list(map(lambda x: x.encode(), self.users)),
+            "proxies": list(map(str, self.listed_proxies)),
             "created": int(time.time())
         }
-        print tmp
         self.db = tmp
-
+        return tmp
 
     def write_db(self):
         with open(self.directory + "/db.json", "wa") as target:
@@ -133,3 +146,21 @@ class InstagramUser(object):
 
     def encode(self):
         return InstagramUserManager.encode_user(self)
+
+if __name__ == "__main__":
+    man = InstagramUserManager("db")
+
+    user_a = InstagramUser("test", "123", "o@b.de", "l", "wer", {"":""})
+    user_b = InstagramUser("test2", "321", "o@c.de", "l", "rew", {":":":"})
+
+    man.add_user(user_a)
+    man.add_user(user_b)
+
+    a = man.gen_db()
+    man.write_db()
+
+    follower_a = InstagramFollower("hallo1", "444")
+    user_a.add_follower(follower_a)
+
+    b = man.gen_db()
+    man.write_db()
