@@ -1,6 +1,7 @@
 from anonbox import generate_email
 import requests
 import random
+import json
 
 csrf = "Y2tp9b7TPttTHt6eFoqS7Rl6h8ZTA0eU"
 
@@ -51,6 +52,6 @@ def create_user():
     )
 
     if req.status_code == 200:
-        return req.text, username, password, mailbox, req.cookies
+        return json.loads(req.text), username, password, email, mailbox, req.cookies
     else:
         return req.status_code, req.text
