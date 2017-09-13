@@ -3,9 +3,7 @@ import requests
 import random
 import json
 
-csrf = "Y2tp9b7TPttTHt6eFoqS7Rl6h8ZTA0eU"
-
-def create_user():
+def create_user(csrf):
     """
     This method creates a user with random username, password
     :return: username, password, cookies
