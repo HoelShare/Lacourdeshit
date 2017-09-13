@@ -133,9 +133,3 @@ class InstagramUser(object):
 
     def encode(self):
         return InstagramUserManager.encode_user(self)
-
-if __name__ == "__main__":
-    user = InstagramUser("test", "aaaaaaa", "abc", "cbaa", "dklfnwner23nti2", {'NOPE': 1, "BLA": "N"})
-    user2= InstagramUser("test2", "bbbbbbbb", "cba", "aabc", "ifnlksnfln3ln2", {"meh": "dope", "bla": 10})
-    manager = InstagramUserManager("test")
-    
