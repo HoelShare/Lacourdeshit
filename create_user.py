@@ -2,7 +2,9 @@ from anonbox import generate_email
 import requests
 import random
 
-def create_user(csrf):
+csrf = "Y2tp9b7TPttTHt6eFoqS7Rl6h8ZTA0eU"
+
+def create_user():
     """
     This method creates a user with random username, password
     :return: username, password, cookies
